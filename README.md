@@ -1,2 +1,2 @@
-# atenas
+# Atenas
 Zenvia Hackathon
