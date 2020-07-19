@@ -9,13 +9,6 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      client_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: { model: "clients", key: "id" },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
       order_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -23,19 +16,15 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      deliverers_id: {
+      deliverer_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "deliverers", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      phone: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      address: {
-        type: Sequelize.STRING,
+      sequence: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       created_at: {
