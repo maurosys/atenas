@@ -1,0 +1,6 @@
+api/node_modules
+api/.env
+
+chatbot/node_modules
+chatbot/.env
+
