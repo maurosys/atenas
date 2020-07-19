@@ -1,18 +1,54 @@
+const Business = require("./Business");
+const Client = require("./Client");
+const Product = require("./Product");
 const { Model, DataTypes } = require("sequelize");
 
 class Order extends Model {
   static init(sequelize) {
     super.init(
       {
-        client_cpf: DataTypes.STRING,
-        company_cnpj: DataTypes.STRING,
-        date: DataTypes.STRING,
-        price: DataTypes.STRING,
-        amount: DataTypes.INTEGER,
-        status: DataTypes.STRING,
-        address: DataTypes.STRING,
-        lat: DataTypes.STRING,
-        long: DataTypes.STRING,
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: DataTypes.INTEGER
+        },
+        client_id: {
+          allowNull: false,
+          type: DataTypes.INTEGER,
+          references: {
+            model: Client,
+            key: 'id'
+          }
+        },
+        business_id: {
+          allowNull: false,
+          type: DataTypes.INTEGER,
+          references: {
+            model: Business,
+            key: 'id'
+          }
+        },
+        product_id: {
+          allowNull: false,
+          type: DataTypes.INTEGER,
+          references: {
+            model: Product,
+            key: 'id'
+          }
+        },
+        price: {
+          allowNull: false,
+          type: DataTypes.DECIMAL(10,2)
+        },
+        amount: {
+          allowNull: false,
+          type: DataTypes.INTEGER
+        },
+        status: {
+          allowNull: false,
+          type: DataTypes.STRING
+        },
       },
       {
         sequelize,
@@ -21,4 +57,4 @@ class Order extends Model {
   }
 }
 
-modules.exports = Order;
+module.exports = Order;

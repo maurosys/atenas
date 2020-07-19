@@ -4,14 +4,50 @@ class Business extends Model {
   static init(sequelize) {
     super.init(
       {
-        fantasy_name: DataTypes.STRING,
-        company_name: DataTypes.STRING,
-        email: DataTypes.STRING,
-        cnpj: DataTypes.STRING,
-        phone: DataTypes.STRING,
-        address: DataTypes.STRING,
-        lat: DataTypes.STRING,
-        long: DataTypes.STRING,
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: DataTypes.INTEGER
+        },
+        fantasy_name: {
+          allowNull: false,
+          type: DataTypes.STRING
+        },
+        company_name: {
+          allowNull: false,
+          type: DataTypes.STRING
+        },
+        email: {
+          allowNull: false,
+          type: DataTypes.STRING
+        },
+        password: {
+          allowNull: false,
+          type: DataTypes.STRING
+        },
+        phone: {
+          allowNull: false,
+          type: DataTypes.STRING
+        },
+        cnpj:{
+          allowNull: false,
+          type: DataTypes.STRING
+        },
+        address: {
+          allowNull: false,
+          type: DataTypes.STRING
+        },
+        lat: {
+          allowNull: false,
+          type: DataTypes.STRING,
+          defalutValue: "0"
+        },
+        long: {
+          allowNull: false,
+          type: DataTypes.STRING,
+          defalutValue: "0"
+        },
       },
       {
         sequelize,
@@ -20,4 +56,4 @@ class Business extends Model {
   }
 }
 
-modules.exports = Business;
+module.exports = Business;

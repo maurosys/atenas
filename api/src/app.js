@@ -7,7 +7,10 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
 const routes = require("./routes");
-// import "./config/db";
+
+// inicializa o banco de dados nos models
+require ("./database");
+
 const app = express();
 
 app.use(express.json());

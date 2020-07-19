@@ -23,10 +23,12 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      code: {
-        type: Sequelize.STRING,
-        unique: true,
+      business_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references: { model: "businesses", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       price: {
         type: Sequelize.DECIMAL(10, 2),
@@ -36,11 +38,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      phone: {
-        type: Sequelize.STRING,
-        defalutValue: "empy",
-      },
-      address: {
+      status: {
         type: Sequelize.STRING,
         allowNull: false,
       },

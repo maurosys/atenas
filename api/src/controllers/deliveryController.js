@@ -1,9 +1,10 @@
-const Product = require("../models/Product");
+const Client = require("../models/Client");
+const Delivery = require("../models/Delivery");
 
 module.exports = {
   async create(req, res) {
     try {
-      const result = await Product.create(req.body);
+      const result = await Delivery.create(req.body);
 
       console.log(`result: ${result}`);
 
@@ -17,18 +18,25 @@ module.exports = {
 
   async list(req, res) {
     try {
-      const result = await Product.findAll({
-        attributes: [
-          'id',
-          'name',
-          'category',
-          'description'
-        ]
-      });
+      const result = await Delivery.findAll({include: ["deliverer","order"]});
 
-      console.log(`result: ${result}`);
 
-      return res.json({status: "ok", result});
+      let returnData = [];
+      result.forEach((item) => {
+        returnData.push({
+          id: item.id,
+          delivererName: item.deliverer.name,
+          clientName: item.order.getClient().name,
+          sequence: item.sequence,
+          status: item.status,
+        });
+        console.log(item);
+        }
+      );
+
+      //console.log(`result: ${returnData}`);
+
+      return res.json({status: "ok", returnData});
     } catch (err) {
       console.error(`Error: ${err}`);
 
@@ -38,7 +46,7 @@ module.exports = {
 
   async get(req, res) {
     try {
-      const result = await Product.findByPk(req.body.id);
+      const result = await Delivery.findByPk(req.body.id);
 
       console.log(`result: ${result}`);
 
@@ -57,7 +65,7 @@ module.exports = {
 
   async remove(req, res) {
     try {
-      const result = await Product.destroy({
+      const result = await Delivery.destroy({
         where: {id: req.body.id}
       });
 
