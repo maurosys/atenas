@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+api/node_modules
+api/.env
+
+chatbot/node_modules
+chatbot/.env
+
+=======
 # Logs
 logs
 *.log
@@ -102,3 +110,4 @@ dist
 
 # TernJS port file
 .tern-port
+>>>>>>> 3dd20b5c3b16c647301a5f2ab335e8eaaf292308
