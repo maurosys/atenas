@@ -16,6 +16,16 @@ const assistant = new AssistantV2({
 });
 
 class Watson {
+  constructor() {
+    this.offers = null;
+    this.priority = null;
+    this.address = null;
+    this.number = null;
+    this.menu = null;
+    this.offerCode = null;
+    this.orderCode = null;
+  }
+
   sessionClient() {
     return new Promise((resolve, reject) => {
       assistant.createSession(
@@ -49,13 +59,28 @@ class Watson {
     });
   }
 
-  async sendMessage(msg) {
+  async sendMessage(msg, loop) {
     const sessionId = await this.sessionClient();
     return new Promise((resolve, reject) => {
       assistant.message(
         {
           assistantId: process.env.ASSISTANT_ID,
           sessionId,
+          context: {
+            skills: {
+              'main skill': {
+                user_defined: {
+                  offers: this.offers,
+                  priority: this.priority,
+                  address: this.address,
+                  number: this.number,
+                  menu: this.menu,
+                  offerCode: this.offerCode,
+                  orderCode: this.orderCode,
+                },
+              },
+            },
+          },
           input: {
             text: msg,
             options: {
@@ -63,37 +88,106 @@ class Watson {
               debug: true,
             },
           },
-          context: {
-            skills: {
-              'main skill': {
-                user_defined: {
-                  ...msg,
-                },
-              },
-            },
-          },
         },
         (err, response) => {
           if (err) return reject(err);
           else {
             let message = response.result.output.generic[0].text;
-            if (response.result.output.generic[0].response_type == 'option') {
-              const msg = response.result.output.generic.map((item) => {
-                const labels = item.options.map((item) => item.label);
+            // console.log(
+            //   response.result.context.skills['main skill'].user_defined.offers
+            // );
+
+            console.log(
+              response.result.context.skills['main skill'].user_defined
+            );
+            if (
+              response.result.context.skills['main skill'].user_defined.offers
+            ) {
+              this.offers =
+                response.result.context.skills[
+                  'main skill'
+                ].user_defined.offers;
+            }
+
+            if (
+              response.result.context.skills['main skill'].user_defined.priority
+            ) {
+              console.log(
+                response.result.context.skills['main skill'].user_defined
+                  .priority
+              );
+              this.priority =
+                response.result.context.skills[
+                  'main skill'
+                ].user_defined.priority;
+            }
+
+            if (
+              response.result.context.skills['main skill'].user_defined.address
+            ) {
+              this.address =
+                response.result.context.skills[
+                  'main skill'
+                ].user_defined.address;
+            }
+
+            if (
+              response.result.context.skills['main skill'].user_defined.number
+            ) {
+              this.number =
+                response.result.context.skills[
+                  'main skill'
+                ].user_defined.number;
+            }
+
+            if (
+              response.result.context.skills['main skill'].user_defined.menu
+            ) {
+              this.menu =
+                response.result.context.skills['main skill'].user_defined.menu;
+            }
+            if (
+              response.result.context.skills['main skill'].user_defined.menu
+            ) {
+              this.menu =
+                response.result.context.skills['main skill'].user_defined.menu;
+            }
+
+            if (
+              response.result.context.skills['main skill'].user_defined
+                .offerCode
+            ) {
+              this.offerCode =
+                response.result.context.skills[
+                  'main skill'
+                ].user_defined.offerCode;
+            }
+
+            if (
+              response.result.context.skills['main skill'].user_defined
+                .orderCode
+            ) {
+              this.orderCode =
+                response.result.context.skills[
+                  'main skill'
+                ].user_defined.orderCode;
+            }
+            if (response.result.output.generic.length > 1) {
+              const payload = response.result.output.generic.map((item) => {
                 return {
                   title: item.title,
-                  labels,
+                  image: item.source,
                 };
               });
-              message = `${msg[0].title}\n\n${msg[0].labels.join('\n')}`;
               return resolve({
-                message,
-                intent: 'vazio' || response.result.output.intents[0].intent,
+                message: payload[1].title,
+                image: payload[1].image,
               });
             }
+
             return resolve({
               message,
-              intent: 'vazio' || response.result.output.intents[0].intent,
+              action: 'vazio',
             });
           }
         }
